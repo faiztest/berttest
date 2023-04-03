@@ -105,6 +105,6 @@ if uploaded_file is not None:
         freq = topic_model.get_topic_info(); freq.head(5)
         topic_model.get_topic(0)
         #topic_model.topic_representations_(6)
-        fig1 = topic_model.visualize_topics()
+        fig1 = topic_model.visualize_topics(topic_model)
         st.write(fig1)
           
