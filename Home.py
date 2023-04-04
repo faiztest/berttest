@@ -24,6 +24,8 @@ from io import StringIO
 from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
 from bertopic import BERTopic
+import plotly.express as px
+from sklearn.cluster import KMeans
 
 
 #===config===
@@ -71,7 +73,7 @@ if uploaded_file is not None:
         topic_abs = [t.split(' ') for t in topic_abs]
         id2word = Dictionary(topic_abs)
         corpus = [id2word.doc2bow(text) for text in topic_abs]
-        num_topic = st.slider('Choose number of topics', min_value=2, max_value=15, step=1)
+        num_topic = st.slider('Choose number of topics', min_value=2, max_value=50, step=1)
          
         #===LDA===
         lda_model = LdaModel(corpus=corpus,
@@ -100,13 +102,11 @@ if uploaded_file is not None:
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
         
     elif method is 'BERTopic':
+        num_topic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
-        topic_model = BERTopic(language="multilingual", calculate_probabilities=True, verbose=True)
+        cluster_model = KMeans(n_clusters=num_topic)
+        topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
-        #freq = topic_model.get_topic_info(); freq.head(5)
-        #topic_model.get_topic(0)
-        #topic_model.topic_representations_(6)
-        fig = topic_model.visualize_topics()
         with StringIO() as f:
           embed_minimal_html(f, [fig], title="BERTopic")
           fig_html = f.getvalue()
