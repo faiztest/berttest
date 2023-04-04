@@ -25,7 +25,7 @@ from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
 from bertopic import BERTopic
 import plotly.express as px
-from sklearn.cluster import KMeans
+from scikit-learn.cluster import KMeans
 
 
 #===config===
