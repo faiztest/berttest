@@ -21,6 +21,7 @@ import pyLDAvis.gensim_models as gensimvis
 import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 from io import StringIO
+from ipywidgets.embed import embed_minimal_html
 from nltk.stem.snowball import SnowballStemmer
 from bertopic import BERTopic
 
@@ -105,5 +106,8 @@ if uploaded_file is not None:
         #freq = topic_model.get_topic_info(); freq.head(5)
         #topic_model.get_topic(0)
         #topic_model.topic_representations_(6)
-        fig1 = topic_model.visualize_topics()
-        st.write(fig1)
+        fig = topic_model.visualize_topics()
+        with StringIO() as f:
+          embed_minimal_html(f, [fig], title="BERTopic")
+          fig_html = f.getvalue()
+        st.components.v1.html(fig_html, width=1200, height=800, scrolling=True)
