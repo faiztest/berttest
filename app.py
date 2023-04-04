@@ -65,7 +65,7 @@ if uploaded_file is not None:
 
     method = st.selectbox(
          'Choose method',
-       ('pyLDA', 'BERTopic'))
+         ('pyLDA', 'BERTopic'))
        
     #===topic===
     if method is 'pyLDA':
@@ -107,9 +107,34 @@ if uploaded_file is not None:
         cluster_model = KMeans(n_clusters=num_topic)
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
-        fig1 = topic_model.visualize_topics()
-        st.write(fig1)
-        #with StringIO() as f:
-          #embed_minimal_html(f, [fig], title="BERTopic")
-          #fig_html = f.getvalue()
-        #st.components.v1.html(fig_html, width=1200, height=800, scrolling=True) 
+        
+        #===visualization===
+        viz = st.selectbox(
+         'Choose visualization',
+         ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Topic Similarity', 'Visualize Topics over Time'))
+     
+        if viz == 'Visualize Topics':
+               fig1 = topic_model.visualize_topics()
+               st.write(fig1)
+               
+        elif viz == 'Visualize Documents':
+               fig2 = topic_model.visualize_documents(topic_abs)
+               st.write(fig2)
+        
+        elif viz == 'Visualize Document Hierarchy':
+               fig3 = topic_model.visualize_hierarchy(top_n_topics=num_topic)
+               st.write(fig3)
+        
+        elif viz == 'Visualize Topic Similarity':
+               fig4 = topic_model.visualize_heatmap(n_clusters=num_topic-1, width=1000, height=1000)
+               st.write(fig4)
+               
+        elif viz == 'Visualize Topic Similarity':
+               fig5 = topic_model.visualize_barchart(num_topic=5)
+               st.write(fig5)
+               
+        elif viz == 'Visualize Topics over Time':
+               topic_time = paper.Year.values.tolist()
+               topics_over_time = model.topics_over_time(topic_abs, topic_time)
+               fig6 = model.visualize_topics_over_time(topics_over_time)
+               st.write(fig6)
