@@ -104,6 +104,7 @@ if uploaded_file is not None:
     elif method is 'BERTopic':
         num_topic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
+        topic_time = paper.Year.values.tolist()
         cluster_model = KMeans(n_clusters=num_topic)
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
@@ -111,7 +112,7 @@ if uploaded_file is not None:
         #===visualization===
         viz = st.selectbox(
          'Choose visualization',
-         ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Topic Similarity', 'Visualize Topics over Time'))
+         ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
      
         if viz == 'Visualize Topics':
                fig1 = topic_model.visualize_topics()
@@ -129,12 +130,11 @@ if uploaded_file is not None:
                fig4 = topic_model.visualize_heatmap(n_clusters=num_topic-1, width=1000, height=1000)
                st.write(fig4)
                
-        elif viz == 'Visualize Topic Similarity':
-               fig5 = topic_model.visualize_barchart(num_topic=5)
+        elif viz == 'Visualize Terms':
+               fig5 = topic_model.visualize_barchart(num_topic=num_topic)
                st.write(fig5)
                
         elif viz == 'Visualize Topics over Time':
-               topic_time = paper.Year.values.tolist()
                topics_over_time = model.topics_over_time(topic_abs, topic_time)
                fig6 = model.visualize_topics_over_time(topics_over_time)
                st.write(fig6)
