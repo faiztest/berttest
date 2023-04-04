@@ -112,4 +112,4 @@ if uploaded_file is not None:
         #with StringIO() as f:
           #embed_minimal_html(f, [fig], title="BERTopic")
           #fig_html = f.getvalue()
-        #st.components.v1.html(fig_html, width=1200, height=800, scrolling=True)
+        #st.components.v1.html(fig_html, width=1200, height=800, scrolling=True) 
