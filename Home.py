@@ -107,8 +107,9 @@ if uploaded_file is not None:
         cluster_model = KMeans(n_clusters=num_topic)
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
-        fig = topic_model.visualize_topics()
-        with StringIO() as f:
-          embed_minimal_html(f, [fig], title="BERTopic")
-          fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=1200, height=800, scrolling=True)
+        fig1 = topic_model.visualize_topics()
+        st.write(fig1)
+        #with StringIO() as f:
+          #embed_minimal_html(f, [fig], title="BERTopic")
+          #fig_html = f.getvalue()
+        #st.components.v1.html(fig_html, width=1200, height=800, scrolling=True)
