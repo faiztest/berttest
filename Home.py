@@ -102,9 +102,8 @@ if uploaded_file is not None:
         topic_abs = paper.Abstract_stop.values.tolist()
         topic_model = BERTopic(language="multilingual", calculate_probabilities=True, verbose=True)
         topics, probs = topic_model.fit_transform(topic_abs)
-        freq = topic_model.get_topic_info(); freq.head(5)
-        topic_model.get_topic(0)
+        #freq = topic_model.get_topic_info(); freq.head(5)
+        #topic_model.get_topic(0)
         #topic_model.topic_representations_(6)
-        fig1 = topic_model.visualize_topics(topic_model)
+        fig1 = topic_model.visualize_topics()
         st.write(fig1)
-          
