@@ -131,7 +131,7 @@ if uploaded_file is not None:
                st.write(fig4)
                
         elif viz == 'Visualize Terms':
-               fig5 = topic_model.visualize_barchart #(num_topic=num_btopic)
+               fig5 = topic_model.visualize_barchart(top_n_topics=num_btopic)
                st.write(fig5)
                
         elif viz == 'Visualize Topics over Time':
