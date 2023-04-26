@@ -132,8 +132,7 @@ if uploaded_file is not None:
                
         elif viz == 'Visualize Terms':
                fig5 = topic_model.visualize_barchart #(num_topic=num_btopic)
-               #st.write(fig5)
-               st.plotly_chart(fig5, use_container_width=False)
+               st.write(fig5)
                
         elif viz == 'Visualize Topics over Time':
                topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
