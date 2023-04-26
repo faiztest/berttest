@@ -102,10 +102,10 @@ if uploaded_file is not None:
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
         
     elif method is 'BERTopic':
-        num_topic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
+        num_btopic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
         topic_time = paper.Year.values.tolist()
-        cluster_model = KMeans(n_clusters=num_topic)
+        cluster_model = KMeans(n_clusters=num_btopic)
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
         
@@ -123,18 +123,18 @@ if uploaded_file is not None:
                st.write(fig2)
         
         elif viz == 'Visualize Document Hierarchy':
-               fig3 = topic_model.visualize_hierarchy(top_n_topics=num_topic)
+               fig3 = topic_model.visualize_hierarchy(top_n_topics=num_btopic)
                st.write(fig3)
         
         elif viz == 'Visualize Topic Similarity':
-               fig4 = topic_model.visualize_heatmap(n_clusters=num_topic-1, width=1000, height=1000)
+               fig4 = topic_model.visualize_heatmap(n_clusters=num_btopic-1, width=1000, height=1000)
                st.write(fig4)
                
         elif viz == 'Visualize Terms':
-               fig5 = topic_model.visualize_barchart(num_topic=num_topic)
+               fig5 = topic_model.visualize_barchart(num_topic=num_btopic)
                st.write(fig5)
                
         elif viz == 'Visualize Topics over Time':
-               topics_over_time = model.topics_over_time(topic_abs, topic_time)
-               fig6 = model.visualize_topics_over_time(topics_over_time)
+               topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
+               fig6 = topic_model.visualize_topics_over_time(topics_over_time)
                st.write(fig6)
