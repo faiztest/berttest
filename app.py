@@ -34,7 +34,7 @@ st.set_page_config(
      page_icon="🥥",
      layout="wide"
 )
-st.header("pyLDA")
+st.header("Topic Modeling")
 st.subheader('Put your CSV file here ...')
 
 #===upload file===
@@ -87,19 +87,25 @@ if uploaded_file is not None:
         pprint(lda_model.print_topics())
         doc_lda = lda_model[corpus]
 
+        tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📐 Calculate coherence", "Reference"])
+    
+        with tab2:
         #===coherence score===
-        if st.button('📐 Calculate coherence'):
-                    with st.spinner('Calculating, please wait ....'):    
-                       coherence_model_lda = CoherenceModel(model=lda_model, texts=topic_abs, dictionary=id2word, coherence='c_v')
-                       coherence_lda = coherence_model_lda.get_coherence()
-                       st.write(coherence_lda)
+             with st.spinner('Calculating, please wait ....'):    
+                 coherence_model_lda = CoherenceModel(model=lda_model, texts=topic_abs, dictionary=id2word, coherence='c_v')
+                 coherence_lda = coherence_model_lda.get_coherence()
+                 st.write(coherence_lda)
+            
+        with tab1:
         #===visualization===
-        if st.button('📈 Generate visualization'):
-                    with st.spinner('Creating pyLDAvis Visualization ...'):
-                        vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
-                        py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
-                        components.html(py_lda_vis_html, width=1700, height=800)
-                        st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+             with st.spinner('Creating pyLDAvis Visualization ...'):
+                 vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
+                 py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
+                 components.html(py_lda_vis_html, width=1700, height=800)
+                 st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+            
+        with tab3:
+             st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
         
     elif method is 'BERTopic':
         num_btopic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
@@ -109,32 +115,37 @@ if uploaded_file is not None:
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
         
-        #===visualization===
-        viz = st.selectbox(
-         'Choose visualization',
-         ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
-     
-        if viz == 'Visualize Topics':
-               fig1 = topic_model.visualize_topics()
-               st.write(fig1)
-               
-        elif viz == 'Visualize Documents':
-               fig2 = topic_model.visualize_documents(topic_abs)
-               st.write(fig2)
-        
-        elif viz == 'Visualize Document Hierarchy':
-               fig3 = topic_model.visualize_hierarchy(top_n_topics=num_btopic)
-               st.write(fig3)
-        
-        elif viz == 'Visualize Topic Similarity':
-               fig4 = topic_model.visualize_heatmap(n_clusters=num_btopic-1, width=1000, height=1000)
-               st.write(fig4)
-               
-        elif viz == 'Visualize Terms':
-               fig5 = topic_model.visualize_barchart(top_n_topics=num_btopic)
-               st.write(fig5)
-               
-        elif viz == 'Visualize Topics over Time':
-               topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
-               fig6 = topic_model.visualize_topics_over_time(topics_over_time)
-               st.write(fig6)
+        tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "Reference"])
+        with tab1:
+             #===visualization===
+             viz = st.selectbox(
+              'Choose visualization',
+              ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
+
+             if viz == 'Visualize Topics':
+                    fig1 = topic_model.visualize_topics()
+                    st.write(fig1)
+
+             elif viz == 'Visualize Documents':
+                    fig2 = topic_model.visualize_documents(topic_abs)
+                    st.write(fig2)
+
+             elif viz == 'Visualize Document Hierarchy':
+                    fig3 = topic_model.visualize_hierarchy(top_n_topics=num_btopic)
+                    st.write(fig3)
+
+             elif viz == 'Visualize Topic Similarity':
+                    fig4 = topic_model.visualize_heatmap(n_clusters=num_btopic-1, width=1000, height=1000)
+                    st.write(fig4)
+
+             elif viz == 'Visualize Terms':
+                    fig5 = topic_model.visualize_barchart(top_n_topics=num_btopic)
+                    st.write(fig5)
+
+             elif viz == 'Visualize Topics over Time':
+                    topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
+                    fig6 = topic_model.visualize_topics_over_time(topics_over_time)
+                    st.write(fig6)
+                    
+        with tab2:
+          st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.**')
