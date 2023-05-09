@@ -111,7 +111,7 @@ if uploaded_file is not None:
         num_btopic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
         topic_time = paper.Year.values.tolist()
-        cluster_model = KMeans(n_clusters=num_btopic)
+        cluster_model = KMeans(n_clusters=4)
         topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
         
