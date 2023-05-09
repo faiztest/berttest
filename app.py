@@ -112,7 +112,7 @@ if uploaded_file is not None:
         num_btopic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
         topic_time = paper.Year.values.tolist()
-        topic_model = BERTopic(verbose=True, embedding_model="paraphrase-MiniLM-L12-v2", min_topic_size=50)
+        topic_model = BERTopic(verbose=True, embedding_model="paraphrase-MiniLM-L12-v2", min_topic_size=10)
         topics, _ = topic_model.fit_transform(abstracts); len(topic_model.get_topic_info())
         #hdbscan_model = HDBSCAN(min_cluster_size=num_btopic, metric='euclidean', cluster_selection_method='eom', prediction_data=True)
         #topic_model = BERTopic(hdbscan_model=hdbscan_model).fit(topic_abs)
