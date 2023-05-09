@@ -113,7 +113,7 @@ if uploaded_file is not None:
         topic_abs = paper.Abstract_stop.values.tolist()
         topic_time = paper.Year.values.tolist()
         hdbscan_model = HDBSCAN(min_cluster_size=num_btopic, metric='euclidean', cluster_selection_method='eom', prediction_data=True)
-        topic_model = BERTopic(hdbscan_model=hdbscan_model)
+        topic_model = BERTopic(hdbscan_model=hdbscan_model).fit(topic_abs)
         #cluster_model = KMeans(n_clusters=num_btopic)
         #topic_model = BERTopic(hdbscan_model=cluster_model).fit(topic_abs)
         topics, probs = topic_model.fit_transform(topic_abs)
