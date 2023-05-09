@@ -66,7 +66,7 @@ if uploaded_file is not None:
 
     method = st.selectbox(
          'Choose method',
-         ('pyLDA', 'BERTopic'))
+         ('BERTopic', 'pyLDA'))
        
     #===topic===
     if method is 'pyLDA':
