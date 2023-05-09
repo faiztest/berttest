@@ -63,6 +63,9 @@ if uploaded_file is not None:
     stop = stopwords.words('english')
     paper['Abstract_stop'] = paper['Abstract_lem'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
     
+     #topic_abs
+    topic_abs = paper.Abstract_stop.values.tolist()
+    topic_abs = [t.split(' ') for t in topic_abs]
 
     method = st.selectbox(
          'Choose method',
@@ -70,8 +73,8 @@ if uploaded_file is not None:
        
     #===topic===
     if method is 'pyLDA':
-        topic_abs = paper.Abstract_stop.values.tolist()
-        topic_abs = [t.split(' ') for t in topic_abs]
+        #topic_abs = paper.Abstract_stop.values.tolist()
+        #topic_abs = [t.split(' ') for t in topic_abs]
         id2word = Dictionary(topic_abs)
         corpus = [id2word.doc2bow(text) for text in topic_abs]
         num_topic = st.slider('Choose number of topics', min_value=2, max_value=50, step=1)
@@ -110,7 +113,7 @@ if uploaded_file is not None:
         
     elif method is 'BERTopic':
         num_btopic = st.slider('Choose number of topics', min_value=4, max_value=50, step=1)
-        topic_abs = paper.Abstract_stop.values.tolist()
+        #topic_abs = paper.Abstract_stop.values.tolist()
         topic_time = paper.Year.values.tolist()
         topic_model = BERTopic(verbose=True, embedding_model="paraphrase-MiniLM-L12-v2", min_topic_size=10)
         topics, _ = topic_model.fit_transform(topic_abs); len(topic_model.get_topic_info())
