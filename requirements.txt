@@ -18,7 +18,7 @@ umap-learn
 wordcloud
 mlxtend
 bertopic
-ipywidgets
+ipywidgets==7.6.6
 hdbscan
 #biterm
 bitermplus
