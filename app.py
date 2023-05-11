@@ -120,18 +120,18 @@ if uploaded_file is not None:
         docs_lens = list(map(len, docs_vec))
         biterms = btm.get_biterms(docs_vec)
         model = btm.BTM(
-            X, vocabulary, seed=12321, T=8, M=20, alpha=50/8, beta=0.01)
+            X, vocabulary, seed=12321, T=num_btopic, M=20, alpha=50/8, beta=0.01)
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         #st.write('Score: ', (coherence))
-        model.labels_
-        WIDTH=800
+        btm.get_docs_top_topic(texts, model.matrix_docs_topics_)
+        WIDTH=1200
         btmvis = tmp.report(width=WIDTH, model=model, docs=topic_abs)
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="Biterm")
           fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=WIDTH, height=700, scrolling=True)
+        st.components.v1.html(fig_html, width=WIDTH, height=1200, scrolling=True)
     
     #===BERTopic===
     elif method is 'BERTopic':
