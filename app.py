@@ -26,7 +26,7 @@ from nltk.stem.snowball import SnowballStemmer
 from bertopic import BERTopic
 import plotly.express as px
 from sklearn.cluster import KMeans
-
+import bitermplus as btm
 
 #===config===
 st.set_page_config(
@@ -64,7 +64,7 @@ if uploaded_file is not None:
 
     method = st.selectbox(
             'Choose method',
-            ('pyLDA', 'BERTopic'))
+            ('pyLDA', 'Biterm', 'BERTopic'))
         
     #===topic===
     if method is 'pyLDA':
@@ -108,6 +108,25 @@ if uploaded_file is not None:
              st.markdown('**Lamba, M., & Madhusudhan, M. (2021, July 31). Topic Modeling. Text Mining for Information Professionals, 105–137.** https://doi.org/10.1007/978-3-030-85085-2_4')
              st.markdown('**Lamba, M., & Madhusudhan, M. (2019, June 7). Mapping of topics in DESIDOC Journal of Library and Information Technology, India: a study. Scientometrics, 120(2), 477–505.** https://doi.org/10.1007/s11192-019-03137-5')
      
+    #===Biterm===
+    elif method is 'Biterm':
+        num_btopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
+        topic_abs = paper.Abstract_stop.values.tolist()
+        X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
+        tf = np.array(X.sum(axis=0)).ravel()
+        docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
+        docs_lens = list(map(len, docs_vec))
+        biterms = btm.get_biterms(docs_vec)
+        model = btm.BTM(
+            X, vocabulary, seed=12321, T=8, M=20, alpha=50/8, beta=0.01)
+        model.fit(biterms, iterations=20)
+        p_zd = model.transform(docs_vec)
+        coherence = model.coherence_
+        st.write('Score: ', (coherence))
+        model.labels_
+        btmvis = tmp.report(model=model, docs=topic_abs)
+        st.write('btmvis')
+    
     #===BERTopic===
     elif method is 'BERTopic':
         num_btopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
