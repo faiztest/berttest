@@ -21,7 +21,7 @@ bertopic
 ipywidgets
 hdbscan
 #biterm
-bitermplus=~7.6
+bitermplus
 tmplot
 tomotopy
 
