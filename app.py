@@ -125,7 +125,7 @@ if uploaded_file is not None:
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
         #st.write('Score: ', (coherence))
-        model_label = model.labels_
+        model.labels_
         WIDTH=1700
         btmvis = tmp.report(width=WIDTH, model=model, docs=topic_abs)
         with StringIO() as f:
