@@ -126,11 +126,11 @@ if uploaded_file is not None:
         coherence = model.coherence_
         #st.write('Score: ', (coherence))
         model.labels_
-        btmvis = tmp.report(width=700, model=model, docs=topic_abs)
+        btmvis = tmp.report(width=500, model=model, docs=topic_abs)
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="Biterm")
           fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=1400, height=1200, scrolling=True)
+        st.components.v1.html(fig_html, width=1500, height=1200, scrolling=True)
     
     #===BERTopic===
     elif method is 'BERTopic':
