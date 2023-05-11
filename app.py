@@ -123,7 +123,7 @@ if uploaded_file is not None:
         model.fit(biterms, iterations=20)
         p_zd = model.transform(docs_vec)
         coherence = model.coherence_
-        st.write('Score: ', (coherence))
+        #st.write('Score: ', (coherence))
         model.labels_
         btmvis = tmp.report(model=model, docs=topic_abs)
         with StringIO() as f:
