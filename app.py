@@ -27,6 +27,7 @@ from bertopic import BERTopic
 import plotly.express as px
 from sklearn.cluster import KMeans
 import bitermplus as btm
+import tmplot as tmp
 
 #===config===
 st.set_page_config(
