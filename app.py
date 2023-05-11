@@ -125,7 +125,8 @@ if uploaded_file is not None:
         coherence = model.coherence_
         st.write('Score: ', (coherence))
         model.labels_
-        tmp.report(model=model, docs=topic_abs)
+        btmvis = tmp.report(model=model, docs=topic_abs)
+        st.write(btmvis)
         
     
     #===BERTopic===
