@@ -126,7 +126,7 @@ if uploaded_file is not None:
         coherence = model.coherence_
         #st.write('Score: ', (coherence))
         model.labels_
-        btmvis = tmp.report(width=500, model=model, docs=topic_abs)
+        btmvis = tmp.report(width=500, model=model) #, docs=topic_abs)
         with StringIO() as f:
           embed_minimal_html(f, [btmvis], title="Biterm")
           fig_html = f.getvalue()
