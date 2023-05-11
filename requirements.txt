@@ -20,3 +20,7 @@ mlxtend
 bertopic
 ipywidgets
 hdbscan
+#biterm
+bitermplus
+tmplot
+
