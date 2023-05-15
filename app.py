@@ -26,8 +26,9 @@ from nltk.stem.snowball import SnowballStemmer
 from bertopic import BERTopic
 import plotly.express as px
 from sklearn.cluster import KMeans
-import bitermplus as btm
-import tmplot as tmp
+from biterm.btm import oBTM 
+from sklearn.feature_extraction.text import CountVectorizer
+from biterm.utility import vec_to_biterms, topic_summuary
 
 
 #===config===
@@ -114,23 +115,27 @@ if uploaded_file is not None:
     elif method is 'Biterm':
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
-        X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
-        tf = np.array(X.sum(axis=0)).ravel()
-        docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
-        docs_lens = list(map(len, docs_vec))
-        biterms = btm.get_biterms(docs_vec)
-        model = btm.BTM(
-            X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
-        model.fit(biterms, iterations=20)
-        p_zd = model.transform(docs_vec)
-        coherence = model.coherence_
-        #st.write('Score: ', (coherence))
-        model.labels_
-        btmvis = tmp.report(width=450, model=model, docs=topic_abs)
-        with StringIO() as f:
-          embed_minimal_html(f, [btmvis], title="Biterm")
-          fig_html = f.getvalue()
-        st.components.v1.html(fig_html, width=1500, height=1200, scrolling=True)
+        vec = CountVectorizer(stop_words='english')
+        X = vec.fit_transform(papery).toarray()
+
+        # get vocabulary
+        vocab = np.array(vec.get_feature_names_out())
+
+        # get biterms
+        biterms = vec_to_biterms(X)
+
+        # create btm
+        btm = oBTM(num_topics=num_bitopic, V=vocab)
+          
+        for i in range(0, len(biterms), 100):
+            biterms_chunk = biterms[i:i + 100]
+            btm.fit(biterms_chunk, iterations=50)
+        topics = btm.transform(biterms)
+        
+        visbit = pyLDAvis.prepare(btm.phi_wz.T, topics, np.count_nonzero(X, axis=1), vocab, np.sum(X, axis=0))
+        py_bit_vis_html = pyLDAvis.prepared_data_to_html(visbit)
+        components.html(py_bit_vis_html, width=1700, height=800)
+        
     
     #===BERTopic===
     elif method is 'BERTopic':
