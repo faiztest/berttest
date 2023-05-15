@@ -116,7 +116,7 @@ if uploaded_file is not None:
         num_bitopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1)
         topic_abs = paper.Abstract_stop.values.tolist()
         vec = CountVectorizer(stop_words='english')
-        X = vec.fit_transform(papery).toarray()
+        X = vec.fit_transform(topic_abs).toarray()
 
         # get vocabulary
         vocab = np.array(vec.get_feature_names_out())
