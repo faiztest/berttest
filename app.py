@@ -132,9 +132,16 @@ if uploaded_file is not None:
          papers = conv_txt(extype)
           
     topic_abs, paper=clean_csv(extype)
-    method = st.selectbox(
+    c1, c2, c3 = st.columns([5,4,1])
+    method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm','BERTopic'), on_change=reset_all)
+    num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
+    if c3.button("Submit", on_click=reset_all):
+         num_bitopic = num_cho
+    else:
+         num_bitopic = 2    
+     
         
     #===topic===
     if method == 'Choose...':
@@ -187,12 +194,7 @@ if uploaded_file is not None:
              st.markdown('**Lamba, M., & Madhusudhan, M. (2019, June 7). Mapping of topics in DESIDOC Journal of Library and Information Technology, India: a study. Scientometrics, 120(2), 477–505.** https://doi.org/10.1007/s11192-019-03137-5')
      
      #===Biterm===
-    elif method == 'Biterm':          
-        num_cho = st.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-        if st.button("Submit", on_click=reset_all):
-             num_bitopic = num_cho
-        else:
-             num_bitopic = 2     
+    elif method == 'Biterm':            
              
         #===optimize Biterm===
         @st.cache_data(ttl=3600)
