@@ -140,42 +140,42 @@ if uploaded_file is not None:
     if method == 'Choose...':
         st.write('')
 
-    elif method == 'pyLDA':
-         num_topic = st.slider('Choose number of topics', min_value=2, max_value=15, step=1, on_change=reset_all)
-         @st.cache_data(ttl=3600, show_spinner=False)
-         def pylda(extype):
-            topic_abs_LDA = [t.split(' ') for t in topic_abs]
-            id2word = Dictionary(topic_abs_LDA)
-            corpus = [id2word.doc2bow(text) for text in topic_abs_LDA]
-            #===LDA===
-            lda_model = LdaModel(corpus=corpus,
-                        id2word=id2word,
-                        num_topics=num_topic, 
-                        random_state=0,
-                        chunksize=100,
-                        alpha='auto',
-                        per_word_topics=True)
-
-            pprint(lda_model.print_topics())
-            doc_lda = lda_model[corpus]
-
-            #===visualization===
-            coherence_model_lda = CoherenceModel(model=lda_model, texts=topic_abs_LDA, dictionary=id2word, coherence='c_v')
-            coherence_lda = coherence_model_lda.get_coherence()
-            vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
-            py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
-            return py_lda_vis_html, coherence_lda
-         
+    elif method == 'pyLDA':       
          tab1, tab2, tab3 = st.tabs(["📈 Generate visualization & Calculate coherence", "📃 Reference", "📓 Recommended Reading"])
 
          with tab1:
          #===visualization===
-             if st.button("Run"):
-               with st.spinner('Please wait ...'):
-                    py_lda_vis_html, coherence_lda = pylda(extype)
-                    st.write('Coherence: ', (coherence_lda))
-                    components.html(py_lda_vis_html, width=1700, height=800)
-                    st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+              num_topic = st.slider('Choose number of topics', min_value=2, max_value=15, step=1, on_change=reset_all)
+              @st.cache_data(ttl=3600, show_spinner=False)
+              def pylda(extype):
+                 topic_abs_LDA = [t.split(' ') for t in topic_abs]
+                 id2word = Dictionary(topic_abs_LDA)
+                 corpus = [id2word.doc2bow(text) for text in topic_abs_LDA]
+                 #===LDA===
+                 lda_model = LdaModel(corpus=corpus,
+                             id2word=id2word,
+                             num_topics=num_topic, 
+                             random_state=0,
+                             chunksize=100,
+                             alpha='auto',
+                             per_word_topics=True)
+     
+                 pprint(lda_model.print_topics())
+                 doc_lda = lda_model[corpus]
+     
+                 #===visualization===
+                 coherence_model_lda = CoherenceModel(model=lda_model, texts=topic_abs_LDA, dictionary=id2word, coherence='c_v')
+                 coherence_lda = coherence_model_lda.get_coherence()
+                 vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
+                 py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
+                 return py_lda_vis_html, coherence_lda
+                   
+              if st.button("Run"):
+                  with st.spinner('Please wait ...'):
+                       py_lda_vis_html, coherence_lda = pylda(extype)
+                       st.write('Coherence: ', (coherence_lda))
+                       components.html(py_lda_vis_html, width=1700, height=800)
+                       st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
