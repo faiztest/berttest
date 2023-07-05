@@ -247,8 +247,8 @@ if uploaded_file is not None:
 
                num_bitopic = st.selectbox('Choose number of topics', range(2, 21), 2, key='num_bitopic')
                
-               run_button = st.button("Run")
-               if run_button or 'numvis' not in st.session_state:
+               run_checkbox = st.checkbox("Run")
+               if run_checkbox or 'numvis' not in st.session_state:
                    st.session_state['numvis'] = run_computation(extype, num_bitopic)
                else:
                    numvis = st.session_state['numvis']
