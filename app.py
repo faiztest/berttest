@@ -218,7 +218,7 @@ if uploaded_file is not None:
              try:
                with st.spinner('Performing computations. Please wait ...'): 
                     topics_coords, phi, totaltop = biterm_topic(extype)            
-                    col1, col2 = st.columns(2)
+                    col1, col2 = st.columns([4,6])
                   
                     @st.cache_data(ttl=3600)
                     def biterm_map(extype):
