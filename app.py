@@ -236,7 +236,7 @@ if uploaded_file is not None:
                               'Choose topic',
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
-                         st.altair_chart(btmvis_coords, use_container_width=True)
+                         st.altair_chart(btmvis_coords)
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
