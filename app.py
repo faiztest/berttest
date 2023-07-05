@@ -190,6 +190,9 @@ if uploaded_file is not None:
     elif method == 'Biterm':          
           tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
           with tab1:
+               # Initialize session state if it doesn't exist
+               if 'numvis' not in st.session_state:
+                   st.session_state['numvis'] = None
                num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_all)     
              
                #===optimize Biterm===
@@ -237,6 +240,9 @@ if uploaded_file is not None:
                               with col2:
                                    btmvis_probs = biterm_bar(extype, numvis)
                                    st.altair_chart(btmvis_probs, use_container_width=True)
+
+                              # Update session state with the selected topic
+                              st.session_state['numvis'] = numvis
           
                          except ValueError:
                               st.error('Please raise the number of topics')
