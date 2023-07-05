@@ -137,7 +137,7 @@ if uploaded_file is not None:
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm','BERTopic'), on_change=reset_all)
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-    c3.markdown(""); c3.markdown("");
+    c3.markdown("")
     if c3.button("Submit", on_click=reset_all):
          num_bitopic = num_cho
     else:
