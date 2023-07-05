@@ -170,11 +170,12 @@ if uploaded_file is not None:
 
          with tab1:
          #===visualization===
-             with st.spinner('Calculating and Creating pyLDAvis Visualization ...'):
-              py_lda_vis_html, coherence_lda = pylda(extype)
-              st.write('Coherence: ', (coherence_lda))
-              components.html(py_lda_vis_html, width=1700, height=800)
-              st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+             if st.button("Run"):
+               with st.spinner('Please wait ...'):
+                    py_lda_vis_html, coherence_lda = pylda(extype)
+                    st.write('Coherence: ', (coherence_lda))
+                    components.html(py_lda_vis_html, width=1700, height=800)
+                    st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
