@@ -140,8 +140,8 @@ if uploaded_file is not None:
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     if c2.button("Submit", on_click=reset_all):
          num_topic = num_cho
-    else:
-         num_topic = 2    
+    #else:
+         #num_topic = 2    
            
     #===topic===
     if method == 'Choose...':
