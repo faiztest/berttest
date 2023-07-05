@@ -171,7 +171,7 @@ if uploaded_file is not None:
                  return py_lda_vis_html, coherence_lda
                    
               if st.button("Run"):
-                  with st.spinner('Please wait ...'):
+                  with st.spinner('Performing computations. Please wait ...'):
                        py_lda_vis_html, coherence_lda = pylda(extype)
                        st.write('Coherence: ', (coherence_lda))
                        components.html(py_lda_vis_html, width=1700, height=800)
@@ -187,53 +187,59 @@ if uploaded_file is not None:
              st.markdown('**Lamba, M., & Madhusudhan, M. (2019, June 7). Mapping of topics in DESIDOC Journal of Library and Information Technology, India: a study. Scientometrics, 120(2), 477–505.** https://doi.org/10.1007/s11192-019-03137-5')
      
      #===Biterm===
-    elif method == 'Biterm':
-        num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_all)     
-        #===optimize Biterm===
-        @st.cache_data(ttl=3600)
-        def biterm_topic(extype):
-            X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
-            tf = np.array(X.sum(axis=0)).ravel()
-            docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
-            docs_lens = list(map(len, docs_vec))
-            biterms = btm.get_biterms(docs_vec)
-            model = btm.BTM(
-              X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
-            model.fit(biterms, iterations=20)
-            p_zd = model.transform(docs_vec)
-            coherence = model.coherence_
-            phi = tmp.get_phi(model)
-            topics_coords = tmp.prepare_coords(model)
-            totaltop = topics_coords.label.values.tolist()
-            return topics_coords, phi, totaltop
-
-        try:
-          topics_coords, phi, totaltop = biterm_topic(extype)
-          #with st.spinner('Visualizing, please wait ....'):          
+    elif method == 'Biterm':          
           tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
           with tab1:
-            col1, col2 = st.columns(2)
-                  
-            @st.cache_data(ttl=3600)
-            def biterm_map(extype):
-              btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
-              return btmvis_coords
-                  
-            @st.cache_data(ttl=3600)
-            def biterm_bar(extype):
-              terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
-              btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
-              return btmvis_probs
-                  
-            with col1:
-              numvis = st.selectbox(
-                'Choose topic',
-                (totaltop), on_change=reset_biterm)
-              btmvis_coords = biterm_map(extype)
-              st.altair_chart(btmvis_coords, use_container_width=True)
-            with col2:
-              btmvis_probs = biterm_bar(extype)
-              st.altair_chart(btmvis_probs, use_container_width=True)
+               num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_all)     
+             
+               #===optimize Biterm===
+               @st.cache_data(ttl=3600)
+               def biterm_topic(extype):
+                    X, vocabulary, vocab_dict = btm.get_words_freqs(topic_abs)
+                    tf = np.array(X.sum(axis=0)).ravel()
+                    docs_vec = btm.get_vectorized_docs(topic_abs, vocabulary)
+                    docs_lens = list(map(len, docs_vec))
+                    biterms = btm.get_biterms(docs_vec)
+                    model = btm.BTM(
+                         X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
+                    model.fit(biterms, iterations=20)
+                    p_zd = model.transform(docs_vec)
+                    coherence = model.coherence_
+                    phi = tmp.get_phi(model)
+                    topics_coords = tmp.prepare_coords(model)
+                    totaltop = topics_coords.label.values.tolist()
+                    return topics_coords, phi, totaltop
+     
+               if st.button("Run"):
+                    with st.spinner('Performing computations. Please wait ...'):
+                    try:
+                         topics_coords, phi, totaltop = biterm_topic(extype)
+      
+                         col1, col2 = st.columns(2)
+                                 
+                         @st.cache_data(ttl=3600)
+                         def biterm_map(extype):
+                              btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
+                              return btmvis_coords
+                                 
+                         @st.cache_data(ttl=3600)
+                         def biterm_bar(extype):
+                              terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
+                              btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
+                              return btmvis_probs
+                                 
+                         with col1:
+                              numvis = st.selectbox(
+                                   'Choose topic',
+                                   (totaltop), on_change=reset_biterm)
+                              btmvis_coords = biterm_map(extype)
+                              st.altair_chart(btmvis_coords, use_container_width=True)
+                         with col2:
+                              btmvis_probs = biterm_bar(extype)
+                              st.altair_chart(btmvis_probs, use_container_width=True)
+     
+                    except ValueError:
+                         st.error('Please raise the number of topics')
 
           with tab2: 
             st.markdown('**Yan, X., Guo, J., Lan, Y., & Cheng, X. (2013, May 13). A biterm topic model for short texts. Proceedings of the 22nd International Conference on World Wide Web.** https://doi.org/10.1145/2488388.2488514')
@@ -243,8 +249,6 @@ if uploaded_file is not None:
             st.markdown('**George, Crissandra J., "AMBIGUOUS APPALACHIANNESS: A LINGUISTIC AND PERCEPTUAL INVESTIGATION INTO ARC-LABELED PENNSYLVANIA COUNTIES" (2022). Theses and Dissertations-- Linguistics. 48.** https://doi.org/10.13023/etd.2022.217')
             st.markdown('**Li, J., Chen, W. H., Xu, Q., Shah, N., Kohler, J. C., & Mackey, T. K. (2020). Detection of self-reported experiences with corruption on twitter using unsupervised machine learning. Social Sciences & Humanities Open, 2(1), 100060.** https://doi.org/10.1016/j.ssaho.2020.100060')
           
-        except ValueError:
-          st.error('Please raise the number of topics')
     
      #===BERTopic===
     elif method == 'BERTopic':
