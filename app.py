@@ -136,11 +136,12 @@ if uploaded_file is not None:
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm','BERTopic'), on_change=reset_all)
+    c1.write('Don't do anything during the computing')
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     if c2.button("Submit", on_click=reset_all):
-         num_bitopic = num_cho
+         num_topic = num_cho
     else:
-         num_bitopic = 2    
+         num_topic = 2    
      
         
     #===topic===
@@ -152,7 +153,6 @@ if uploaded_file is not None:
 
          with tab1:
          #===visualization===
-              num_topic = st.slider('Choose number of topics', min_value=2, max_value=15, step=1, on_change=reset_all)
               @st.cache_data(ttl=3600, show_spinner=False)
               def pylda(extype):
                  topic_abs_LDA = [t.split(' ') for t in topic_abs]
@@ -205,7 +205,7 @@ if uploaded_file is not None:
             docs_lens = list(map(len, docs_vec))
             biterms = btm.get_biterms(docs_vec)
             model = btm.BTM(
-              X, vocabulary, seed=12321, T=num_bitopic, M=20, alpha=50/8, beta=0.01)
+              X, vocabulary, seed=12321, T=num_topic, M=20, alpha=50/8, beta=0.01)
             model.fit(biterms, iterations=20)
             p_zd = model.transform(docs_vec)
             coherence = model.coherence_
