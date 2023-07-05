@@ -136,7 +136,7 @@ if uploaded_file is not None:
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm','BERTopic'), on_change=reset_all)
-    c1.write("Don't do anything during the computing")
+    c1.warning("Don't do anything during the computing", icon="⚠️") 
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
     if c2.button("Submit", on_click=reset_all):
          num_topic = num_cho
@@ -177,12 +177,11 @@ if uploaded_file is not None:
                  py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
                  return py_lda_vis_html, coherence_lda
                    
-              if st.button("Run"):
-                  with st.spinner('Performing computations. Please wait ...'):
-                       py_lda_vis_html, coherence_lda = pylda(extype)
-                       st.write('Coherence: ', (coherence_lda))
-                       components.html(py_lda_vis_html, width=1700, height=800)
-                       st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+              with st.spinner('Performing computations. Please wait ...'):
+                   py_lda_vis_html, coherence_lda = pylda(extype)
+                   st.write('Coherence: ', (coherence_lda))
+                   components.html(py_lda_vis_html, width=1700, height=800)
+                   st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
