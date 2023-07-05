@@ -250,6 +250,9 @@ if uploaded_file is not None:
           
         except ValueError:
           st.error('Please raise the number of topics and click submit')
+
+        except NameError:
+          st.error('Please click submit')
     
     
      #===BERTopic===
