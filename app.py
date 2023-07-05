@@ -249,7 +249,7 @@ if uploaded_file is not None:
             st.markdown('**Li, J., Chen, W. H., Xu, Q., Shah, N., Kohler, J. C., & Mackey, T. K. (2020). Detection of self-reported experiences with corruption on twitter using unsupervised machine learning. Social Sciences & Humanities Open, 2(1), 100060.** https://doi.org/10.1016/j.ssaho.2020.100060')
           
         except ValueError:
-          st.error('Please raise the number of topics')
+          st.error('Please raise the number of topics and click submit')
     
     
      #===BERTopic===
@@ -297,35 +297,39 @@ if uploaded_file is not None:
         
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
-          topic_model, topic_time, topics, probs = bertopic_vis(extype)
-          #===visualization===
-          viz = st.selectbox(
-            'Choose visualization',
-            ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
-
-          if viz == 'Visualize Topics':
-                 fig1 = Vis_Topics(extype)
-                 st.write(fig1)
-
-          elif viz == 'Visualize Documents':
-                 fig2 = Vis_Documents(extype)
-                 st.write(fig2)
-
-          elif viz == 'Visualize Document Hierarchy':
-                 fig3 = Vis_Hierarchy(extype)
-                 st.write(fig3)
-
-          elif viz == 'Visualize Topic Similarity':
-                 fig4 = Vis_Heatmap(extype)
-                 st.write(fig4)
-
-          elif viz == 'Visualize Terms':
-                 fig5 = Vis_Barchart(extype)
-                 st.write(fig5)
-
-          elif viz == 'Visualize Topics over Time':
-                 fig6 = Vis_ToT(extype)
-                 st.write(fig6)
+          try:
+               topic_model, topic_time, topics, probs = bertopic_vis(extype)
+               #===visualization===
+               viz = st.selectbox(
+                 'Choose visualization',
+                 ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
+     
+               if viz == 'Visualize Topics':
+                      fig1 = Vis_Topics(extype)
+                      st.write(fig1)
+     
+               elif viz == 'Visualize Documents':
+                      fig2 = Vis_Documents(extype)
+                      st.write(fig2)
+     
+               elif viz == 'Visualize Document Hierarchy':
+                      fig3 = Vis_Hierarchy(extype)
+                      st.write(fig3)
+     
+               elif viz == 'Visualize Topic Similarity':
+                      fig4 = Vis_Heatmap(extype)
+                      st.write(fig4)
+     
+               elif viz == 'Visualize Terms':
+                      fig5 = Vis_Barchart(extype)
+                      st.write(fig5)
+     
+               elif viz == 'Visualize Topics over Time':
+                      fig6 = Vis_ToT(extype)
+                      st.write(fig6)
+                    
+          except ValueError:
+               st.error('Please raise the number of topics and click submit')
 
         with tab2:
           st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.** https://doi.org/10.48550/arXiv.2203.05794')
