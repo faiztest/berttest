@@ -215,47 +215,48 @@ if uploaded_file is not None:
             totaltop = topics_coords.label.values.tolist()
             return topics_coords, phi, totaltop
 
-        try:
-          topics_coords, phi, totaltop = biterm_topic(extype)
-          #with st.spinner('Visualizing, please wait ....'):          
-          tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
-          with tab1:
-            col1, col2 = st.columns(2)
+        tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
+        with tab1:
+             try:
+               with st.spinner('Performing computations. Please wait ...'): 
+                    topics_coords, phi, totaltop = biterm_topic(extype)            
+                    col1, col2 = st.columns(2)
                   
-            @st.cache_data(ttl=3600)
-            def biterm_map(extype):
-              btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
-              return btmvis_coords
-                  
-            @st.cache_data(ttl=3600)
-            def biterm_bar(extype):
-              terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
-              btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
-              return btmvis_probs
-                  
-            with col1:
-              numvis = st.selectbox(
-                'Choose topic',
-                (totaltop), on_change=reset_biterm)
-              btmvis_coords = biterm_map(extype)
-              st.altair_chart(btmvis_coords, use_container_width=True)
-            with col2:
-              btmvis_probs = biterm_bar(extype)
-              st.altair_chart(btmvis_probs, use_container_width=True)
+                    @st.cache_data(ttl=3600)
+                    def biterm_map(extype):
+                         btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
+                         return btmvis_coords
+                            
+                    @st.cache_data(ttl=3600)
+                    def biterm_bar(extype):
+                         terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
+                         btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
+                         return btmvis_probs
+                            
+                    with col1:
+                         numvis = st.selectbox(
+                              'Choose topic',
+                              (totaltop), on_change=reset_biterm)
+                         btmvis_coords = biterm_map(extype)
+                         st.altair_chart(btmvis_coords, use_container_width=True)
+                    with col2:
+                         btmvis_probs = biterm_bar(extype)
+                         st.altair_chart(btmvis_probs, use_container_width=True)
 
-          with tab2: 
+             except ValueError:
+                   st.error('🙇‍♂️ Please raise the number of topics and click submit')
+             except NameError:
+                   st.error('🖱️ Please click Submit')
+
+        with tab2: 
             st.markdown('**Yan, X., Guo, J., Lan, Y., & Cheng, X. (2013, May 13). A biterm topic model for short texts. Proceedings of the 22nd International Conference on World Wide Web.** https://doi.org/10.1145/2488388.2488514')
-          with tab3:
+        with tab3:
             st.markdown('**Cai, M., Shah, N., Li, J., Chen, W. H., Cuomo, R. E., Obradovich, N., & Mackey, T. K. (2020, August 26). Identification and characterization of tweets related to the 2015 Indiana HIV outbreak: A retrospective infoveillance study. PLOS ONE, 15(8), e0235150.** https://doi.org/10.1371/journal.pone.0235150')
             st.markdown('**Chen, Y., Dong, T., Ban, Q., & Li, Y. (2021). What Concerns Consumers about Hypertension? A Comparison between the Online Health Community and the Q&A Forum. International Journal of Computational Intelligence Systems, 14(1), 734.** https://doi.org/10.2991/ijcis.d.210203.002')
             st.markdown('**George, Crissandra J., "AMBIGUOUS APPALACHIANNESS: A LINGUISTIC AND PERCEPTUAL INVESTIGATION INTO ARC-LABELED PENNSYLVANIA COUNTIES" (2022). Theses and Dissertations-- Linguistics. 48.** https://doi.org/10.13023/etd.2022.217')
             st.markdown('**Li, J., Chen, W. H., Xu, Q., Shah, N., Kohler, J. C., & Mackey, T. K. (2020). Detection of self-reported experiences with corruption on twitter using unsupervised machine learning. Social Sciences & Humanities Open, 2(1), 100060.** https://doi.org/10.1016/j.ssaho.2020.100060')
           
-        except ValueError:
-          st.error('🙇‍♂️ Please raise the number of topics and click submit')
-
-        except NameError:
-          st.error('🖱️ Please click Submit')
+        
     
     
      #===BERTopic===
