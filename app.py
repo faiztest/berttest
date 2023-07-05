@@ -132,13 +132,12 @@ if uploaded_file is not None:
          papers = conv_txt(extype)
           
     topic_abs, paper=clean_csv(extype)
-    c1, c2, c3 = st.columns([5,4,1])
+    c1, c2 = st.columns([5,5])
     method = c1.selectbox(
             'Choose method',
             ('Choose...', 'pyLDA', 'Biterm','BERTopic'), on_change=reset_all)
     num_cho = c2.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-    c3.markdown("")
-    if c3.button("Submit", on_click=reset_all):
+    if c2.button("Submit", on_click=reset_all):
          num_bitopic = num_cho
     else:
          num_bitopic = 2    
