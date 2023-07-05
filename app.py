@@ -210,10 +210,10 @@ if uploaded_file is not None:
                     totaltop = topics_coords.label.values.tolist()
                     return topics_coords, phi, totaltop
      
-               button_sent = st.button("Run")
+               button_sent = st.button("Send")
                if button_sent:
                     st.session_state.button_sent = True
-
+                    
                if st.session_state.button_sent:
                     with st.spinner('Performing computations. Please wait ...'):
                          try:
