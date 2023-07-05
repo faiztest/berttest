@@ -177,10 +177,13 @@ if uploaded_file is not None:
                  return py_lda_vis_html, coherence_lda
                    
               with st.spinner('Performing computations. Please wait ...'):
-                   py_lda_vis_html, coherence_lda = pylda(extype)
-                   st.write('Coherence: ', (coherence_lda))
-                   components.html(py_lda_vis_html, width=1700, height=800)
-                   st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+                   try:
+                        py_lda_vis_html, coherence_lda = pylda(extype)
+                        st.write('Coherence: ', (coherence_lda))
+                        components.html(py_lda_vis_html, width=1700, height=800)
+                        st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+                   except NameError:
+                        st.error('🖱️ Please click Submit')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
@@ -249,10 +252,10 @@ if uploaded_file is not None:
             st.markdown('**Li, J., Chen, W. H., Xu, Q., Shah, N., Kohler, J. C., & Mackey, T. K. (2020). Detection of self-reported experiences with corruption on twitter using unsupervised machine learning. Social Sciences & Humanities Open, 2(1), 100060.** https://doi.org/10.1016/j.ssaho.2020.100060')
           
         except ValueError:
-          st.error('Please raise the number of topics and click submit')
+          st.error('🙇‍♂️ Please raise the number of topics and click submit')
 
         except NameError:
-          st.error('Please click submit')
+          st.error('🖱️ Please click Submit')
     
     
      #===BERTopic===
@@ -332,7 +335,10 @@ if uploaded_file is not None:
                       st.write(fig6)
                     
           except ValueError:
-               st.error('Please raise the number of topics and click submit')
+               st.error('🙇‍♂️ Please raise the number of topics and click submit')
+          
+          except NameError:
+               st.error('🖱️ Please click Submit')
 
         with tab2:
           st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.** https://doi.org/10.48550/arXiv.2203.05794')
