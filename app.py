@@ -189,7 +189,7 @@ if uploaded_file is not None:
      #===Biterm===
     elif method == 'Biterm':          
         num_cho = st.number_input('Choose number of topics', min_value=2, max_value=30, value=2)
-        if st.button("Submit"):
+        if st.button("Submit", on_click=reset_all):
              num_bitopic = num_cho
         else:
              num_bitopic = 2     
