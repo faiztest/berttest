@@ -300,41 +300,42 @@ if uploaded_file is not None:
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
           try:
-               topic_model, topic_time, topics, probs = bertopic_vis(extype)
-               #===visualization===
-               viz = st.selectbox(
-                 'Choose visualization',
-                 ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
-     
-               if viz == 'Visualize Topics':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig1 = Vis_Topics(extype)
-                           st.write(fig1)
-     
-               elif viz == 'Visualize Documents':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig2 = Vis_Documents(extype)
-                           st.write(fig2)
-     
-               elif viz == 'Visualize Document Hierarchy':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig3 = Vis_Hierarchy(extype)
-                           st.write(fig3)
-     
-               elif viz == 'Visualize Topic Similarity':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig4 = Vis_Heatmap(extype)
-                           st.write(fig4)
-     
-               elif viz == 'Visualize Terms':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig5 = Vis_Barchart(extype)
-                           st.write(fig5)
-     
-               elif viz == 'Visualize Topics over Time':
-                      with st.spinner('Performing computations. Please wait ...'):
-                           fig6 = Vis_ToT(extype)
-                           st.write(fig6)
+               with st.spinner('Performing computations. Please wait ...'):
+                    topic_model, topic_time, topics, probs = bertopic_vis(extype)
+                    #===visualization===
+                    viz = st.selectbox(
+                      'Choose visualization',
+                      ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
+          
+                    if viz == 'Visualize Topics':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig1 = Vis_Topics(extype)
+                                st.write(fig1)
+          
+                    elif viz == 'Visualize Documents':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig2 = Vis_Documents(extype)
+                                st.write(fig2)
+          
+                    elif viz == 'Visualize Document Hierarchy':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig3 = Vis_Hierarchy(extype)
+                                st.write(fig3)
+          
+                    elif viz == 'Visualize Topic Similarity':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig4 = Vis_Heatmap(extype)
+                                st.write(fig4)
+          
+                    elif viz == 'Visualize Terms':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig5 = Vis_Barchart(extype)
+                                st.write(fig5)
+          
+                    elif viz == 'Visualize Topics over Time':
+                           with st.spinner('Performing computations. Please wait ...'):
+                                fig6 = Vis_ToT(extype)
+                                st.write(fig6)
                     
           except ValueError:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
