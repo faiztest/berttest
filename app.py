@@ -70,10 +70,6 @@ def reset_biterm():
 
 def reset_all():
      st.cache_data.clear()
-
-# Define the reset_all function
-def reset_run():
-    st.experimental_rerun()
         
 #===clean csv===
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -194,7 +190,8 @@ if uploaded_file is not None:
     elif method == 'Biterm':          
           tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
           with tab1:
-                            
+               num_bitopic = st.slider('Choose number of topics', min_value=2, max_value=20, step=1, on_change=reset_all)     
+             
                #===optimize Biterm===
                @st.cache_data(ttl=3600)
                def biterm_topic(extype):
@@ -212,50 +209,43 @@ if uploaded_file is not None:
                     topics_coords = tmp.prepare_coords(model)
                     totaltop = topics_coords.label.values.tolist()
                     return topics_coords, phi, totaltop
+     
+               button_sent = st.button("Run")
+               if button_sent:
+                    st.session_state.button_sent = True
 
-               @st.cache_data(ttl=3600)
-               def biterm_map(extype, numvis):
-                    btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
-                    return btmvis_coords
+               if st.session_state.button_sent:
+                    with st.spinner('Performing computations. Please wait ...'):
+                         try:
+                              topics_coords, phi, totaltop = biterm_topic(extype)
+           
+                              col1, col2 = st.columns(2)
                                       
-               @st.cache_data(ttl=3600)
-               def biterm_bar(extype, numvis):
-                    terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
-                    btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
-                    return btmvis_probs
-
-               @st.cache_data(ttl=3600)
-               def run_computation(extype, num_bitopic):
-                   try:
-                       topics_coords, phi, totaltop = biterm_topic(extype, num_bitopic)
-               
-                       col1, col2 = st.columns(2)
-               
-                       with col1:
-                           numvis = st.selectbox('Choose topic', totaltop, index=0, key='topic_select')
-                           btmvis_coords = biterm_map(extype, numvis)
-                           st.altair_chart(btmvis_coords, use_container_width=True)
-               
-                       with col2:
-                           btmvis_probs = biterm_bar(extype, numvis)
-                           st.altair_chart(btmvis_probs, use_container_width=True)
-
-                       return numvis  
-               
-                   except ValueError:
-                       st.error('Please raise the number of topics')
-
-               num_bitopic = st.selectbox('Choose number of topics', range(2, 21), 2, key='num_bitopic')
-               
-               run_checkbox = st.checkbox("Run")
-               if run_checkbox or 'numvis' not in st.session_state:
-                   st.session_state['numvis'] = run_computation(extype, num_bitopic)
-               else:
-                   numvis = st.session_state['numvis']
-               
-               # Update session state with the selected topic
-               if numvis is not None:
-                   st.session_state['numvis'] = numvis
+                              @st.cache_data(ttl=3600)
+                              def biterm_map(extype, numvis):
+                                   btmvis_coords = tmp.plot_scatter_topics(topics_coords, size_col='size', label_col='label', topic=numvis)
+                                   return btmvis_coords
+                                      
+                              @st.cache_data(ttl=3600)
+                              def biterm_bar(extype, numvis):
+                                   terms_probs = tmp.calc_terms_probs_ratio(phi, topic=numvis, lambda_=1)
+                                   btmvis_probs = tmp.plot_terms(terms_probs, font_size=12)
+                                   return btmvis_probs
+                                      
+                              with col1:
+                                   st.session_state.numvis = st.selectbox(
+                                        'Choose topic',
+                                        (totaltop))
+                                   if st.session_state.numvis:
+                                        btmvis_coords = biterm_map(extype, st.session_state.numvis)
+                                        st.altair_chart(btmvis_coords, use_container_width=True)
+                              with col2:
+                                   if st.session_state.numvis:
+                                        btmvis_probs = biterm_bar(extype, st.session_state.numvis)
+                                        st.altair_chart(btmvis_probs, use_container_width=True)
+          
+                         except ValueError:
+                              st.error('Please raise the number of topics')
 
           with tab2: 
             st.markdown('**Yan, X., Guo, J., Lan, Y., & Cheng, X. (2013, May 13). A biterm topic model for short texts. Proceedings of the 22nd International Conference on World Wide Web.** https://doi.org/10.1145/2488388.2488514')
