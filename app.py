@@ -252,7 +252,7 @@ if uploaded_file is not None:
     
      #===BERTopic===
     elif method == 'BERTopic':
-        num_btopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1, on_change=reset_all)
+        
         @st.cache_data(ttl=3600)
         def bertopic_vis(extype):
           topic_time = paper.Year.values.tolist()
@@ -296,35 +296,39 @@ if uploaded_file is not None:
         
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
-          topic_model, topic_time, topics, probs = bertopic_vis(extype)
-          #===visualization===
-          viz = st.selectbox(
-            'Choose visualization',
-            ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
-
-          if viz == 'Visualize Topics':
-                 fig1 = Vis_Topics(extype)
-                 st.write(fig1)
-
-          elif viz == 'Visualize Documents':
-                 fig2 = Vis_Documents(extype)
-                 st.write(fig2)
-
-          elif viz == 'Visualize Document Hierarchy':
-                 fig3 = Vis_Hierarchy(extype)
-                 st.write(fig3)
-
-          elif viz == 'Visualize Topic Similarity':
-                 fig4 = Vis_Heatmap(extype)
-                 st.write(fig4)
-
-          elif viz == 'Visualize Terms':
-                 fig5 = Vis_Barchart(extype)
-                 st.write(fig5)
-
-          elif viz == 'Visualize Topics over Time':
-                 fig6 = Vis_ToT(extype)
-                 st.write(fig6)
+          num_btopic = st.slider('Choose number of topics', min_value=4, max_value=20, step=1, on_change=reset_all)
+          if st.button("Run"):
+                    with st.spinner('Performing computations. Please wait ...'):
+                         topic_model, topic_time, topics, probs = bertopic_vis(extype)
+                         
+                         #===visualization===
+                         viz = st.selectbox(
+                           'Choose visualization',
+                           ('Visualize Topics', 'Visualize Documents', 'Visualize Document Hierarchy', 'Visualize Topic Similarity', 'Visualize Terms', 'Visualize Topics over Time'))
+               
+                         if viz == 'Visualize Topics':
+                                fig1 = Vis_Topics(extype)
+                                st.write(fig1)
+               
+                         elif viz == 'Visualize Documents':
+                                fig2 = Vis_Documents(extype)
+                                st.write(fig2)
+               
+                         elif viz == 'Visualize Document Hierarchy':
+                                fig3 = Vis_Hierarchy(extype)
+                                st.write(fig3)
+               
+                         elif viz == 'Visualize Topic Similarity':
+                                fig4 = Vis_Heatmap(extype)
+                                st.write(fig4)
+               
+                         elif viz == 'Visualize Terms':
+                                fig5 = Vis_Barchart(extype)
+                                st.write(fig5)
+               
+                         elif viz == 'Visualize Topics over Time':
+                                fig6 = Vis_ToT(extype)
+                                st.write(fig6)
 
         with tab2:
           st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.** https://doi.org/10.48550/arXiv.2203.05794')
