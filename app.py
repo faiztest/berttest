@@ -239,6 +239,8 @@ if uploaded_file is not None:
                        with col2:
                            btmvis_probs = biterm_bar(extype, numvis)
                            st.altair_chart(btmvis_probs, use_container_width=True)
+
+                       return numvis  
                
                    except ValueError:
                        st.error('Please raise the number of topics')
