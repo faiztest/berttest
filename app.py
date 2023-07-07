@@ -261,7 +261,7 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         btmvis_probs = chart
+                         chart = btmvis_probs
                          chart.save('chart.html')
                          altair_saver.save(chart, 'chart.png')
                          st.image('chart.png')
