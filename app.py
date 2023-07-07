@@ -240,14 +240,14 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         img = st.altair_chart(btmvis_probs, use_container_width=True)
-                         st.write('test st-image')
-                         st.image(img)
-                         st.download_button(
-                                     "Press to download image 👈",
-                                     img,
-                                     "chart.png",
-                                     "image/png")
+                         st.altair_chart(btmvis_probs, use_container_width=True).save('chart.png')
+                         with open("chart.png", "rb") as file:
+                             btn = st.download_button(
+                                     label="Download image",
+                                     data=file,
+                                     file_name="flower.png",
+                                     mime="image/png"
+                                   )
 
              except ValueError:
                    st.error('🙇‍♂️ Please raise the number of topics and click submit')
