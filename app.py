@@ -33,6 +33,7 @@ import spacy
 import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
+import imgkit
 
 
 #===config===
@@ -181,6 +182,19 @@ if uploaded_file is not None:
                         st.write('Coherence: ', (coherence_lda))
                         st.components.v1.html(py_lda_vis_html, width=1700, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+                        py_lda_vis_html = st.components.v1.html(py_lda_vis_html, width=1700, height=800)
+
+                        # Get the HTML content from the DeltaGenerator object
+                        html_content = py_lda_vis_html._html
+          
+                        # Write the HTML content to the file
+                        with open("lda.html", "w") as f:
+                            f.write(str(html_content))
+                         
+                        import imgkit
+                        imgkit.from_file('lda.html', 'out.jpg')
+                        st.image('out.jpg')
+                        
                    except NameError:
                         st.warning('🖱️ Please click Submit')
 
