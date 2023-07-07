@@ -181,7 +181,7 @@ if uploaded_file is not None:
                         components.html(py_lda_vis_html, width=1700, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
                    except NameError:
-                        st.error('🖱️ Please click Submit')
+                        st.warning('🖱️ Please click Submit')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
@@ -244,7 +244,7 @@ if uploaded_file is not None:
              except ValueError:
                    st.error('🙇‍♂️ Please raise the number of topics and click submit')
              except NameError:
-                   st.error('🖱️ Please click Submit')
+                   st.warning('🖱️ Please click Submit')
 
         with tab2: 
             st.markdown('**Yan, X., Guo, J., Lan, Y., & Cheng, X. (2013, May 13). A biterm topic model for short texts. Proceedings of the 22nd International Conference on World Wide Web.** https://doi.org/10.1145/2488388.2488514')
@@ -296,6 +296,11 @@ if uploaded_file is not None:
           topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
           fig6 = topic_model.visualize_topics_over_time(topics_over_time)
           return fig6
+
+        @st.cache_data(ttl=3600)
+        def convert_img(fig):
+          img = fig.write_image("images.jpeg")
+          return img   
         
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
@@ -311,6 +316,12 @@ if uploaded_file is not None:
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig1 = Vis_Topics(extype)
                                 st.write(fig1)
+                                img = convert_img(fig1)
+                                st.download_button(
+                                     "Press to download image 👈",
+                                     img,
+                                     "images.jpeg",
+                                     "image/jpeg")
           
                     elif viz == 'Visualize Documents':
                            with st.spinner('Performing computations. Please wait ...'):
@@ -341,7 +352,7 @@ if uploaded_file is not None:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
           
           except NameError:
-               st.error('🖱️ Please click Submit')
+               st.warning('🖱️ Please click Submit')
 
         with tab2:
           st.markdown('**Grootendorst, M. (2022). BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794.** https://doi.org/10.48550/arXiv.2203.05794')
