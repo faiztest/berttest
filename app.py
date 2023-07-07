@@ -219,20 +219,14 @@ if uploaded_file is not None:
 
         def save_altair_chart_as_png(chart, filename):
               # Capture the chart as an image
-              chart_image = chart.to_json()
-          
-              # Create a BytesIO object to save the image
-              image_stream = io.BytesIO()
-          
-              # Use Streamlit's screenshot function to save the chart as an image
-              st.image(chart_image, use_column_width=True, output_format='png')
-          
-              # Retrieve the screenshot image data
-              image_stream = st._get_widget_from_type("image")[-1].value
+              image = chart.encode(
+                  alt.X('x', title='X-axis'),
+                  alt.Y('y', title='Y-axis')
+              ).to_image(format='png')
           
               # Save the image to a file
-              image = Image.open(io.BytesIO(image_stream))
-              image.save(filename, "PNG") 
+              with open(filename, 'wb') as f:
+                  f.write(image) 
 
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
@@ -261,9 +255,7 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         chart = btmvis_probs
-                         chart.save('chart.html')
-                         altair_saver.save(chart, 'chart.png')
+                         save_altair_chart_as_png(btmvis_probs, "chart.png")
                          st.image('chart.png')
                          with open("chart.png", "rb") as file:
                              btn = st.download_button(
