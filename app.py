@@ -33,6 +33,7 @@ import spacy
 import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
+import pdfkit
 import imgkit
 
 
@@ -191,9 +192,31 @@ if uploaded_file is not None:
                         with open("lda.html", "w") as f:
                             f.write(str(html_content))
                          
-                        import imgkit
-                        imgkit.from_file('lda.html', 'out.jpg')
-                        st.image('out.jpg')
+                        # Path to the HTML file
+                        html_file = 'lda.html'
+                         
+                        # Path to the temporary PDF file
+                        temp_pdf_file = 'temp_pdf.pdf'
+                         
+                        # Path to the output image file
+                        output_image = 'output_image.png'
+                         
+                        # Configuration options for pdfkit
+                        pdfkit_options = {
+                             'page-size': 'A4',
+                             'orientation': 'Landscape',
+                             'quiet': '',
+                        }
+                         
+                        # Convert HTML to temporary PDF
+                        pdfkit.from_file(html_file, temp_pdf_file, options=pdfkit_options)
+                         
+                        # Convert PDF to image
+                        imgkit.from_file(temp_pdf_file, output_image)
+                         
+                        print('Conversion complete.')
+                                                 
+                        st.image(output_image)
                         
                    except NameError:
                         st.warning('🖱️ Please click Submit')
