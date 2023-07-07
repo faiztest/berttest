@@ -177,6 +177,16 @@ if uploaded_file is not None:
                  vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
                  py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
                  return py_lda_vis_html, coherence_lda
+
+              def save_html_as_jpeg(html_content, filename):
+                   # Use Streamlit's screenshot function to capture the rendered HTML
+                   screenshot = st._screenshot_as_png()
+               
+                   # Open the screenshot as an image
+                   image = Image.open(screenshot)
+               
+                   # Save the image as JPEG
+                   image.save(filename, "JPEG")
                    
               with st.spinner('Performing computations. Please wait ...'):
                    try:
@@ -184,6 +194,8 @@ if uploaded_file is not None:
                         st.write('Coherence: ', (coherence_lda))
                         components.html(py_lda_vis_html, width=1700, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+                        save_html_as_jpeg(py_lda_vis_html, "html_image.jpg")
+                        st.image('html_image.jpg')
                    except NameError:
                         st.warning('🖱️ Please click Submit')
 
