@@ -36,6 +36,7 @@ from PIL import Image
 import io
 import altair as alt
 import altair_saver
+import imgkit
 
 
 #===config===
@@ -192,7 +193,7 @@ if uploaded_file is not None:
                    try:
                         py_lda_vis_html, coherence_lda = pylda(extype)
                         st.write('Coherence: ', (coherence_lda))
-                        components.html(py_lda_vis_html, width=1700, height=800)
+                        st.components.v1.html(py_lda_vis_html, width=1700, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
                         save_html_as_jpeg(py_lda_vis_html, "html_image.jpg")
                         st.image('html_image.jpg')
