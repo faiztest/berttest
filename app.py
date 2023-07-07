@@ -240,6 +240,13 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
+                         img = st.altair_chart(btmvis_probs, use_container_width=True).save('chart.png')
+                         st.write(img)
+                         st.download_button(
+                                     "Press to download image 👈",
+                                     img,
+                                     "chart.png",
+                                     "image/png")
 
              except ValueError:
                    st.error('🙇‍♂️ Please raise the number of topics and click submit')
@@ -299,7 +306,7 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600)
         def convert_img(fig):
-          img = fig.write_image("images.jpeg")
+          img = fig.write_image("chart.jpeg")
           return img   
         
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
@@ -321,7 +328,7 @@ if uploaded_file is not None:
                                 st.download_button(
                                      "Press to download image 👈",
                                      img,
-                                     "images.jpeg",
+                                     "chart.jpeg",
                                      "image/jpeg")
           
                     elif viz == 'Visualize Documents':
