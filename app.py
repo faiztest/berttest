@@ -317,6 +317,7 @@ if uploaded_file is not None:
                                 fig1 = Vis_Topics(extype)
                                 st.write(fig1)
                                 img = convert_img(fig1)
+                                st.write(img)
                                 st.download_button(
                                      "Press to download image 👈",
                                      img,
