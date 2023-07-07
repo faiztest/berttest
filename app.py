@@ -32,11 +32,7 @@ import sys
 import spacy
 import en_core_web_sm
 import pipeline
-from PIL import Image
-import io
-import altair as alt
-import altair_saver
-import imgkit
+import plotly.graph_objects as go
 
 
 #===config===
@@ -178,16 +174,6 @@ if uploaded_file is not None:
                  vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
                  py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
                  return py_lda_vis_html, coherence_lda
-
-              def save_html_as_jpeg(html_content, filename):
-                   # Use Streamlit's screenshot function to capture the rendered HTML
-                   screenshot = st._screenshot_as_png()
-               
-                   # Open the screenshot as an image
-                   image = Image.open(screenshot)
-               
-                   # Save the image as JPEG
-                   image.save(filename, "JPEG")
                    
               with st.spinner('Performing computations. Please wait ...'):
                    try:
@@ -195,8 +181,6 @@ if uploaded_file is not None:
                         st.write('Coherence: ', (coherence_lda))
                         st.components.v1.html(py_lda_vis_html, width=1700, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
-                        save_html_as_jpeg(py_lda_vis_html, "html_image.jpg")
-                        st.image('html_image.jpg')
                    except NameError:
                         st.warning('🖱️ Please click Submit')
 
@@ -230,17 +214,6 @@ if uploaded_file is not None:
             totaltop = topics_coords.label.values.tolist()
             return topics_coords, phi, totaltop
 
-        def save_altair_chart_as_png(chart, filename):
-              # Capture the chart as an image
-              image = chart.encode(
-                  alt.X('x', title='X-axis'),
-                  alt.Y('y', title='Y-axis')
-              ).to_image(format='png')
-          
-              # Save the image to a file
-              with open(filename, 'wb') as f:
-                  f.write(image) 
-
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
              try:
@@ -268,18 +241,9 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         save_altair_chart_as_png(btmvis_probs, "chart.png")
-                         st.image('chart.png')
-                         with open("chart.png", "rb") as file:
-                             btn = st.download_button(
-                                     label="Download image",
-                                     data=file,
-                                     file_name="flower.png",
-                                     mime="image/png"
-                                   )
 
-             #except ValueError:
-                   #st.error('🙇‍♂️ Please raise the number of topics and click submit')
+             except ValueError:
+                   st.error('🙇‍♂️ Please raise the number of topics and click submit')
              except NameError:
                    st.warning('🖱️ Please click Submit')
 
@@ -333,11 +297,6 @@ if uploaded_file is not None:
           topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
           fig6 = topic_model.visualize_topics_over_time(topics_over_time)
           return fig6
-
-        @st.cache_data(ttl=3600)
-        def convert_img(fig):
-          img = fig.write_image("chart.jpeg")
-          return img   
         
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
@@ -353,13 +312,9 @@ if uploaded_file is not None:
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig1 = Vis_Topics(extype)
                                 st.write(fig1)
-                                img = convert_img(fig1)
-                                st.write(img)
-                                st.download_button(
-                                     "Press to download image 👈",
-                                     img,
-                                     "chart.jpeg",
-                                     "image/jpeg")
+                                my_saved_image = "fig1.png"
+                                fig1.write_image(my_saved_image)
+                                st.image(my_saved_image)
           
                     elif viz == 'Visualize Documents':
                            with st.spinner('Performing computations. Please wait ...'):
