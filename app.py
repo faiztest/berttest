@@ -240,7 +240,7 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         st.altair_chart(btmvis_probs, use_container_width=True).save('chart.png')
+                         btmvis_probs.save('chart.png')
                          with open("chart.png", "rb") as file:
                              btn = st.download_button(
                                      label="Download image",
