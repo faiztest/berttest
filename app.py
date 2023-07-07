@@ -32,7 +32,7 @@ import sys
 import spacy
 import en_core_web_sm
 import pipeline
-from altair_saver import save
+from PIL import Image
 import altair as alt
 
 
@@ -242,7 +242,9 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         btmvis_probs.save('chart.png')
+                         image = btmvis_probs.save('chart.html')
+                         image = Image.open('chart.html')
+                         image.save('chart.png', 'PNG')
                          st.image('chart.png')
                          with open("chart.png", "rb") as file:
                              btn = st.download_button(
