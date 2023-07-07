@@ -33,6 +33,7 @@ import spacy
 import en_core_web_sm
 import pipeline
 from altair_saver import save
+import altair as alt
 
 
 #===config===
