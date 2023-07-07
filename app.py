@@ -35,6 +35,7 @@ import pipeline
 from PIL import Image
 import io
 import altair as alt
+import altair_saver
 
 
 #===config===
@@ -260,7 +261,9 @@ if uploaded_file is not None:
                     with col2:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
-                         save_altair_chart_as_png(btmvis_probs, "chart.png")
+                         btmvis_probs = chart
+                         chart.save('chart.html')
+                         altair_saver.save(chart, 'chart.png')
                          st.image('chart.png')
                          with open("chart.png", "rb") as file:
                              btn = st.download_button(
