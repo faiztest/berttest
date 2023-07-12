@@ -33,8 +33,7 @@ import spacy
 import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
-import pdfkit
-import imgkit
+from html2image import Html2Image
 
 
 #===config===
@@ -175,49 +174,32 @@ if uploaded_file is not None:
                  coherence_lda = coherence_model_lda.get_coherence()
                  vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
                  py_lda_vis_html = pyLDAvis.prepared_data_to_html(vis)
-                 return py_lda_vis_html, coherence_lda
+                 return py_lda_vis_html, coherence_lda, vis
                    
               with st.spinner('Performing computations. Please wait ...'):
                    try:
-                        py_lda_vis_html, coherence_lda = pylda(extype)
+                        py_lda_vis_html, coherence_lda, vis = pylda(extype)
                         st.write('Coherence: ', (coherence_lda))
-                        st.components.v1.html(py_lda_vis_html, width=1700, height=800)
+                        st.components.v1.html(py_lda_vis_html, width=1500, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
-                        py_lda_vis_html = st.components.v1.html(py_lda_vis_html, width=1700, height=800)
 
-                        # Get the HTML content from the DeltaGenerator object
-                        html_content = py_lda_vis_html._html
-          
-                        # Write the HTML content to the file
-                        with open("lda.html", "w") as f:
-                            f.write(str(html_content))
-                         
-                        # Path to the HTML file
-                        html_file = 'lda.html'
-                         
-                        # Path to the temporary PDF file
-                        temp_pdf_file = 'temp_pdf.pdf'
-                         
-                        # Path to the output image file
-                        output_image = 'output_image.png'
-                         
-                        # Configuration options for pdfkit
-                        pdfkit_options = {
-                             'page-size': 'A4',
-                             'orientation': 'Landscape',
-                             'quiet': '',
-                        }
-                         
-                        # Convert HTML to temporary PDF
-                        pdfkit.from_file(html_file, temp_pdf_file, options=pdfkit_options)
-                         
-                        # Convert PDF to image
-                        imgkit.from_file(temp_pdf_file, output_image)
-                         
-                        print('Conversion complete.')
-                                                 
-                        st.image(output_image)
-                        
+                        def img_lda(extype):
+                             pyLDAvis.save_html(vis, 'output_filename.html')
+                             hti = Html2Image()
+                             hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
+                             hti.screenshot(
+                                  other_file='output_filename.html', css_str=css, size=(1500, 800),
+                                  save_as='ldavis_img.png'
+                             )
+                        img_lda(extype)
+                        with open("ldavis_img.png", "rb") as file:
+                              btn = st.download_button(
+                                  label="Download image",
+                                  data=file,
+                                  file_name="ldavis_img.png",
+                                  mime="image/png"
+                                  )
+                                             
                    except NameError:
                         st.warning('🖱️ Please click Submit')
 
