@@ -182,10 +182,10 @@ if uploaded_file is not None:
                         st.write('Coherence: ', (coherence_lda))
                         st.components.v1.html(py_lda_vis_html, width=1500, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
+                        hti = Html2Image()
 
                         def img_lda(extype):
                              pyLDAvis.save_html(vis, 'output_filename.html')
-                             hti = Html2Image()
                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
                              hti.screenshot(
                                   other_file='output_filename.html', css_str=css, size=(1500, 800),
