@@ -189,6 +189,7 @@ if uploaded_file is not None:
                              pyLDAvis.save_html(vis, 'output_filename.html')
                              hti = Html2Image()
                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
+                             css = "body {background: white;}"
                              hti.screenshot(
                                   other_file='output_filename.html', css_str=css, size=(1500, 800),
                                   save_as='ldavis_img.png'
