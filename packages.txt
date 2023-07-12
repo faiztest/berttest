@@ -1,1 +1,1 @@
-https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/114.0.5735.133/linux64/chrome-linux64.zip
+ chromium-driver
