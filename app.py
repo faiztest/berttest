@@ -34,8 +34,7 @@ import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
 from html2image import Html2Image
-#import asyncio
-#from pyppeteer import launch
+
 hti = Html2Image()
 
 
