@@ -316,7 +316,19 @@ if uploaded_file is not None:
           topics_over_time = topic_model.topics_over_time(topic_abs, topic_time)
           fig6 = topic_model.visualize_topics_over_time(topics_over_time)
           return fig6
-        
+
+        @st.cache_data(ttl=3600, show_spinner=False)
+        def img_bert(fig):
+             my_saved_image = f"{fig}.png"
+             fig.write_image(my_saved_image)
+             with open(my_saved_image, "rb") as file:
+                  btn = st.download_button(
+                       label="Download image",
+                       data=file,
+                       file_name="bert_img.png",
+                       mime="image/png"
+                       )
+                    
         tab1, tab2, tab3 = st.tabs(["📈 Generate visualization", "📃 Reference", "📓 Recommended Reading"])
         with tab1:
           try:
@@ -331,9 +343,8 @@ if uploaded_file is not None:
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig1 = Vis_Topics(extype)
                                 st.write(fig1)
-                                my_saved_image = "fig1.png"
-                                fig1.write_image(my_saved_image)
-                                st.image(my_saved_image)
+                                img_bert(fig1)
+                                
           
                     elif viz == 'Visualize Documents':
                            with st.spinner('Performing computations. Please wait ...'):
