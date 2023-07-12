@@ -203,8 +203,8 @@ if uploaded_file is not None:
                         img_lda(vis)
                         
                                                               
-                   #except NameError:
-                        #st.warning('🖱️ Please click Submit')
+                   except ValueError:
+                        st.warning('🖱️ Please click Submit')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
