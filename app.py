@@ -35,7 +35,7 @@ import pipeline
 import plotly.graph_objects as go
 from html2image import Html2Image
 
-hti = Html2Image()
+
 
 
 #===config===
@@ -185,26 +185,26 @@ if uploaded_file is not None:
                         st.components.v1.html(py_lda_vis_html, width=1500, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
                         
-
                         def img_lda(vis):
                              pyLDAvis.save_html(vis, 'output_filename.html')
+                             hti = Html2Image()
                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
                              hti.screenshot(
                                   other_file='output_filename.html', css_str=css, size=(1500, 800),
                                   save_as='ldavis_img.png'
                              )
-                        img_lda(vis)
-                        
-                        with open("ldavis_img.png", "rb") as file:
+                             with open("ldavis_img.png", "rb") as file:
                               btn = st.download_button(
                                   label="Download image",
                                   data=file,
                                   file_name="ldavis_img.png",
                                   mime="image/png"
                                   )
-                                             
-                   except NameError:
-                        st.warning('🖱️ Please click Submit')
+                        img_lda(vis)
+                        
+                                                              
+                   #except NameError:
+                        #st.warning('🖱️ Please click Submit')
 
          with tab2:
              st.markdown('**Sievert, C., & Shirley, K. (2014). LDAvis: A method for visualizing and interpreting topics. Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces.** https://doi.org/10.3115/v1/w14-3110')
