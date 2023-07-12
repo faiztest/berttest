@@ -28,5 +28,4 @@ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0
 kaleido
 altair-saver
 html2image
-asyncio
-pyppeteer
+chromium
