@@ -323,7 +323,7 @@ if uploaded_file is not None:
 
         @st.cache_data(ttl=3600, show_spinner=False)
         def img_bert(fig):
-             my_saved_image = f"{fig}.png"
+             my_saved_image = "fig.png"
              fig.write_image(my_saved_image)
              with open(my_saved_image, "rb") as file:
                   btn = st.download_button(
