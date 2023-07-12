@@ -34,6 +34,7 @@ import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
 from html2image import Html2Image
+hti = Html2Image()
 
 
 #===config===
@@ -182,16 +183,17 @@ if uploaded_file is not None:
                         st.write('Coherence: ', (coherence_lda))
                         st.components.v1.html(py_lda_vis_html, width=1500, height=800)
                         st.markdown('Copyright (c) 2015, Ben Mabey. https://github.com/bmabey/pyLDAvis')
-                        hti = Html2Image()
+                        
 
-                        def img_lda(extype):
+                        def img_lda(vis):
                              pyLDAvis.save_html(vis, 'output_filename.html')
                              hti.browser.flags = ['--default-background-color=ffffff', '--hide-scrollbars']
                              hti.screenshot(
                                   other_file='output_filename.html', css_str=css, size=(1500, 800),
                                   save_as='ldavis_img.png'
                              )
-                        img_lda(extype)
+                        img_lda(vis)
+                        
                         with open("ldavis_img.png", "rb") as file:
                               btn = st.download_button(
                                   label="Download image",
