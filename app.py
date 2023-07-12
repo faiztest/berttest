@@ -349,31 +349,35 @@ if uploaded_file is not None:
                                 st.write(fig1)
                                 img_bert(fig1)
                                 
-          
                     elif viz == 'Visualize Documents':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig2 = Vis_Documents(extype)
                                 st.write(fig2)
+                                img_bert(fig2)
           
                     elif viz == 'Visualize Document Hierarchy':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig3 = Vis_Hierarchy(extype)
                                 st.write(fig3)
+                                img_bert(fig3)
           
                     elif viz == 'Visualize Topic Similarity':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig4 = Vis_Heatmap(extype)
                                 st.write(fig4)
+                                img_bert(fig4)
           
                     elif viz == 'Visualize Terms':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig5 = Vis_Barchart(extype)
                                 st.write(fig5)
+                                img_bert(fig5)
           
                     elif viz == 'Visualize Topics over Time':
                            with st.spinner('Performing computations. Please wait ...'):
                                 fig6 = Vis_ToT(extype)
                                 st.write(fig6)
+                                img_bert(fig6)
                     
           except ValueError:
                st.error('🙇‍♂️ Please raise the number of topics and click submit')
