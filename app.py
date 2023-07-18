@@ -34,9 +34,8 @@ import en_core_web_sm
 import pipeline
 import plotly.graph_objects as go
 from html2image import Html2Image
-import altair as alt
 from PIL import Image
-from altair_saver import save
+import vl_convert as vlc
 
 
 #===config===
@@ -263,13 +262,13 @@ if uploaded_file is not None:
                               (totaltop), on_change=reset_biterm)
                          btmvis_coords = biterm_map(extype)
                          st.altair_chart(btmvis_coords)
-                         coba = st.altair_chart(btmvis_coords)
-                         btmvis_coords.save('1.png')
-                         coba.save('2.png')
-                         image1 = Image.open('1.png')
-                         st.image(image1, caption='Sunrise by 1')
-                         image2 = Image.open('2.png')
-                         st.image(image2, caption='Sunrise by 2')
+                         png_data = vlc.vegalite_to_png(vl_spec=btmvis_coords, scale=2)
+                         with open("chart.png", "wb") as f:
+                             f.write(png_data)
+                         image = Image.open("chart.png")
+
+                         st.image(image, caption='Sunrise by the mountains')
+                              
                          
                     with col2:
                          btmvis_probs = biterm_bar(extype)
