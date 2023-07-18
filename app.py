@@ -36,6 +36,7 @@ import plotly.graph_objects as go
 from html2image import Html2Image
 import altair as alt
 from PIL import Image
+from altair_saver import save
 
 
 #===config===
