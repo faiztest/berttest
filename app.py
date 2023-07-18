@@ -274,8 +274,8 @@ if uploaded_file is not None:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
 
-             except ValueError:
-                   st.error('🙇‍♂️ Please raise the number of topics and click submit')
+             #except ValueError:
+                   #st.error('🙇‍♂️ Please raise the number of topics and click submit')
              except NameError:
                    st.warning('🖱️ Please click Submit')
 
@@ -424,8 +424,8 @@ if uploaded_file is not None:
                                        mime="image/png"
                                        )
                     
-          #except ValueError:
-               #st.error('🙇‍♂️ Please raise the number of topics and click submit')
+          except ValueError:
+               st.error('🙇‍♂️ Please raise the number of topics and click submit')
           
           except NameError:
                st.warning('🖱️ Please click Submit')
