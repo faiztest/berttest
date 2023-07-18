@@ -273,10 +273,10 @@ if uploaded_file is not None:
                          btmvis_probs = biterm_bar(extype)
                          st.altair_chart(btmvis_probs, use_container_width=True)
 
-             #except ValueError:
-                   #st.error('🙇‍♂️ Please raise the number of topics and click submit')
-             #except NameError:
-                   #st.warning('🖱️ Please click Submit')
+             except ValueError:
+                   st.error('🙇‍♂️ Please raise the number of topics and click submit')
+             except NameError:
+                   st.warning('🖱️ Please click Submit')
 
         with tab2: 
             st.markdown('**Yan, X., Guo, J., Lan, Y., & Cheng, X. (2013, May 13). A biterm topic model for short texts. Proceedings of the 22nd International Conference on World Wide Web.** https://doi.org/10.1145/2488388.2488514')
