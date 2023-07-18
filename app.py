@@ -423,8 +423,8 @@ if uploaded_file is not None:
                                        mime="image/png"
                                        )
                     
-          except ValueError:
-               st.error('🙇‍♂️ Please raise the number of topics and click submit')
+          #except ValueError:
+               #st.error('🙇‍♂️ Please raise the number of topics and click submit')
           
           except NameError:
                st.warning('🖱️ Please click Submit')
