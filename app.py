@@ -87,7 +87,7 @@ def clean_csv(extype):
     paper['Abstract_pre'] = paper['Abstract'].map(lambda x: re.sub('[,:;\.!-?•=]', '', x))
     paper['Abstract_pre'] = paper['Abstract_pre'].map(lambda x: x.lower())
     paper['Abstract_pre'] = paper['Abstract_pre'].map(lambda x: re.sub('©.*', '', x))
-    paper['Abstract_pre'] = paper['Abstract_pre'].str.replace('"', '')
+    paper['Abstract_pre'] = paper['Abstract_pre'].str.replace('"“”', '') 
           
          #===stopword removal===
     stop = stopwords.words('english')
