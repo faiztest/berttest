@@ -203,7 +203,6 @@ if uploaded_file is not None:
                                             group=x,
                                             opacity=10,
                                             mass=1)
-                                            #image="https://upload.wikimedia.org/wikipedia/commons/f/f1/Eo_circle_yellow_circle.svg") 
                                     )   
 
                         for y,z,a,b in zip(res['antecedents'],res['consequents'],res['confidence'],res['to']):
