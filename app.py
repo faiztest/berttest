@@ -198,7 +198,7 @@ if uploaded_file is not None:
                             nodes.append( Node(id=x, 
                                             label=x,
                                             size=50*w+10,
-                                            shape="circularImage",
+                                            shape="ellipse",
                                             labelHighlightBold=True,
                                             group=x,
                                             opacity=10,
